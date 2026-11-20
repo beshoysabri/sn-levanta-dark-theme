@@ -1,35 +1,67 @@
-feat: a charcoal base and lavender selection, instead of near-black
+feat: Levanta Dark — Lavender, written in Karla and IBM Plex Sans Arabic
 
-Through 2.5.1 Lavender was native Dark's palette with the accent swapped.
-Next to Todoist's dark mode, which wears the same lavender, it felt off,
-and the reasons were in the base rather than the accent:
+Levanta Dark is Lavender v2.6.0 with a new writing area. Colours,
+structure, hosting and pre-publish checks are Lavender's: the 90 colour
+declarations still hash to Lavender's digest. It has its own identifier,
+com.beshoysabri.levanta-dark-theme, so it installs alongside Lavender
+and Dark Blue, and pairs with Levanta Light under Use system color
+scheme.
 
-- Near-black (#0f1011) makes a pastel glow. Lavender is 8.0:1 against
-  it, where Dark Blue's mid-tone blue was 3.8:1; the native palette was
-  tuned for a mid-tone accent.
-- There were no in-between lavenders. The 6% accent backdrop is
-  invisible on dark, and Standard Notes paints the selected tag and the
-  selected note with near-black (#0f1011, and #000000 through the
-  contrast background), so selection read as a black bar.
-- Sidebar labels and note text were pure #ffffff on near-black, 19.1:1.
+The note body, Super and plain text alike, is set in Karla (v2.004, the
+variable font, roman and italic) for English and IBM Plex Sans Arabic
+(IBM's own woff2, Regular and Bold) for Arabic. Note titles, the
+sidebar, the note list and menus stay in Inter. A new section 4 holds
+it; the Daily view, selection and optional sections move down one.
 
-2.6.0 lifts the neutrals to charcoal: #1e1e1e base, #252525 sidebar and
-surfaces, #2a2a2a borders, #333333 separators, near-opaque charcoal
-menus. Pure white softens to #eeeeee (14.4:1). The accent gets
-in-between shades: an 18% backdrop, a 35% text-selection wash under
-light text (7.1:1) in place of a solid block with dark text, and a 40%
-scrollbar thumb. Text on solid lavender follows the base, #1e1e1e at
-7.0:1.
+Arabic needs no detection. The browser picks a font per character and
+Karla has no Arabic, so Arabic falls through to Plex. Plex's faces carry
+a unicode-range of the Arabic blocks, so Plex's Latin never replaces
+Karla's and a note without Arabic never downloads Plex. Direction already
+works: Super gives each paragraph dir="auto" (Lexical 0.49), and the
+plain-text editor is a dir="auto" textarea, laid out line by line.
 
-A new section 5 makes selection a lavender wash. Standard Notes uses one
-colour for hover and selection in both the sidebar and the note list, so
-hover stays a neutral grey and rules give the selected tag and the
-selected note the 18% backdrop, with the sidebar label in lavender. They
-only reference variables, so the digest still covers exactly 90
-declarations. The optional extras move to section 6.
+Plex rather than Noto Sans Arabic: its squarish, crisp shapes match
+Karla's; its heh stands 0.41 em against Karla's 0.48 em x-height, where
+Noto's stands 0.50 em and reads a size larger; and its Regular and Bold
+sit at Karla's weight.
 
-Previewed against 2.5.1 in app.standardnotes.com before release. Docs
-and the landing page now describe the charcoal base instead of promising
-native Dark's colours.
+Typed arrows become real ones in English and Arabic: -> <- <-> => <=>
+--> <-- <--> ==> <== <==> ---> <---. Karla has no arrow ligatures, and
+Inter's never formed in Arabic, because a right-to-left run mirrors > to
+< before ligatures are looked up. Levanta Arrows, built by the new
+tools/build-arrows.py, holds Karla's - < = >, Inter's arrows redrawn at
+Karla's stroke weight and centred on Karla's < >, and calt rules for
+DFLT and latn plus the mirrored order for arab and hebr. It sits first
+in the editor's stack with a unicode-range of just those characters. In
+an Arabic paragraph -> draws ←, the way the text reads. <= and >= are
+left alone, and code gets no arrows. The build is byte-for-byte
+reproducible.
 
-Released as 2.6.0.
+The editor rule also honours Standard Notes' Monospace font option,
+which Lavender's app-wide Inter overrides, keeps code monospace inside
+the editor, and drops Inter's cv05 there. --levanta-text-font and
+--levanta-text-ligatures are its knobs; the digest leaves them out, as
+it does --sn-inter-*.
+
+The selected tag's label sets -webkit-text-fill-color as well as color,
+so it is lavender on screen (sampled at #a79ef4). In Lavender v2.6.0 it
+stays #eeeeee.
+
+Section 7, the opt-ins: the arrows-off block also takes calt out of
+--sn-inter-features, because font-feature-settings outranks
+font-variant-ligatures (Lavender's block leaves Inter's arrows fused);
+the tabular-figures block reaches the table cells' text; a new block
+sets the note title in the writing fonts; and "confine Inter to the
+editor" becomes "system font outside the editor".
+
+Desktop and mobile need the fonts installed on the device, as Inter
+always has; the README lists them, and LevantaArrows-*.ttf are served
+from Pages.
+
+Checked in app.standardnotes.com before release, in a plain-text note
+and in Super (the upgrade dialog's live editor), with Chrome's per-node
+platform-font report: Arabic from IBM Plex Sans Arabic, Latin from
+Karla, arrows from Levanta Arrows in both directions, code in the
+monospace face, and the rest of the app in Inter.
+
+Released as 2.8.0.
